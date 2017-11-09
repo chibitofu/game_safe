@@ -13,7 +13,7 @@ import CoreData
 
 extension Game {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Game> {
+    @nonobjc public class func createFetchRequest() -> NSFetchRequest<Game> {
         return NSFetchRequest<Game>(entityName: "Game")
     }
 

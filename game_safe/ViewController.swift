@@ -14,6 +14,43 @@ class ViewController: UITableViewController {
     var container: NSPersistentContainer!
     var gameCollection = [Game]()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        title = "Game Safe"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCollection))
+        
+        container = NSPersistentContainer(name: "game_safe")
+        
+        container.loadPersistentStores { storeDescription, error in
+            self.container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+            
+            if let error = error {
+                print("unresolved error \(error)")
+            }
+        }
+        
+        loadSavedData()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return gameCollection.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Game", for: indexPath)
+        
+        let game = gameCollection[indexPath.row]
+        cell.textLabel!.text = game.name.description
+        
+        return cell
+    }
+    
     @objc func addCollection() {
         let ac = UIAlertController(title: "Create new safe", message: "Enter name of the safe", preferredStyle: .alert)
         let save = UIAlertAction(title: "Save", style: .default) {
@@ -21,7 +58,6 @@ class ViewController: UITableViewController {
             
             guard let textField = ac.textFields?.first,
                 let nameToSave = textField.text else { return }
-            print("text field", nameToSave)
             let game = Game(context: self.container.viewContext)
             
             self.save(gameCollection: game, gameName: nameToSave)
@@ -52,41 +88,18 @@ class ViewController: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func loadSavedData() {
+        let request = Game.createFetchRequest()
+        let sort = NSSortDescriptor(key: "date_created", ascending: false)
+        request.sortDescriptors = [sort]
         
-        title = "Game Safe"
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCollection))
-        
-        container = NSPersistentContainer(name: "game_safe")
-        
-        container.loadPersistentStores { storeDescription, error in
-            self.container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-
-            if let error = error {
-                print("unresolved error \(error)")
-            }
+        do {
+            gameCollection = try container.viewContext.fetch(request)
+            print("Got \(gameCollection.count) commits.")
+            tableView.reloadData()
+        } catch {
+            print("Fetch failed")
         }
-        
     }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gameCollection.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Game", for: indexPath)
-        
-        let game = gameCollection[indexPath.row]
-        cell.textLabel!.text = game.name.description
-        
-        return cell
-    }
-
 }
 
