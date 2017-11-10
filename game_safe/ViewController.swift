@@ -66,9 +66,9 @@ class ViewController: UITableViewController {
             
             guard let textField = ac.textFields?.first,
                 let nameToSave = textField.text else { return }
-            let game = Game(context: self.container.viewContext)
+            let currentGame = Game(context: self.container.viewContext)
             
-            self.save(gameCollection: game, gameName: nameToSave)
+            self.save(addGame: currentGame, gameName: nameToSave)
             self.tableView.reloadData()
         }
         
@@ -88,11 +88,13 @@ class ViewController: UITableViewController {
         }
     }
     
-    func save(gameCollection: Game, gameName: String) {
+    func save(addGame game: Game, gameName: String) {
         let date = Date()
         
-        gameCollection.name = gameName
-        gameCollection.date_created = date
+        game.name = gameName
+        game.date_created = date
+        
+        gameCollection.insert(game, at: 0)
         
         if container.viewContext.hasChanges {
             do {
