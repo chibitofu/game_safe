@@ -51,6 +51,14 @@ class ViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = GameDetailController()
+        vc.gameDetail = gameCollection[indexPath.row]
+//        navigationController?.pushViewController(vc, animated: true)
+        
+        self.performSegue(withIdentifier: "GameDetailViewSegue", sender: self)
+    }
+    
     @objc func addCollection() {
         let ac = UIAlertController(title: "Create new safe", message: "Enter name of the safe", preferredStyle: .alert)
         let save = UIAlertAction(title: "Save", style: .default) {
@@ -71,6 +79,14 @@ class ViewController: UITableViewController {
         ac.addAction(cancel)
         
         present(ac, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GameDetailViewSegue" {
+            let vc = segue.destination as! GameDetailController
+            vc.gameDetail = gameCollection[self.tableView.indexPathForSelectedRow!.row]
+            //Data has to be a variable name in your RandomViewController
+        }
     }
     
     func save(gameCollection: Game, gameName: String) {
