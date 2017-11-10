@@ -35,9 +35,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="iMF-Gz-c8I" kind="show" identifier="GameDetailViewSegue" id="Sab-RC-Qli"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -46,6 +43,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="5EM-KO-jmb"/>
+                    <connections>
+                        <segue destination="iMF-Gz-c8I" kind="show" identifier="GameDetailViewSegue" id="HVG-bf-X9i"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ff-us-03T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
