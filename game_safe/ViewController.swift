@@ -43,7 +43,7 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Game", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GameCell", for: indexPath)
         
         let game = gameCollection[indexPath.row]
         cell.textLabel!.text = game.name.description
@@ -52,8 +52,8 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = GameDetailController()
-        vc.gameDetail = gameCollection[indexPath.row]
+//        let vc = GameDetailController()
+//        vc.gameDetail = gameCollection[indexPath.row]
 //        navigationController?.pushViewController(vc, animated: true)
         
         self.performSegue(withIdentifier: "GameDetailViewSegue", sender: self)
@@ -85,7 +85,6 @@ class ViewController: UITableViewController {
         if segue.identifier == "GameDetailViewSegue" {
             let vc = segue.destination as! GameDetailController
             vc.gameDetail = gameCollection[self.tableView.indexPathForSelectedRow!.row]
-            //Data has to be a variable name in your RandomViewController
         }
     }
     

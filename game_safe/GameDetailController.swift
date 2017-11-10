@@ -42,7 +42,6 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
 //        }
 //    }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,7 +74,7 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Token", for: indexPath) as? GameDetailCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TokenCell", for: indexPath) as? GameDetailCell else {
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
         }
         
