@@ -17,12 +17,29 @@ class TokenCreationCellController: UICollectionViewCell {
 
 class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
  
-
     @IBOutlet weak var TokenViewCollection: UICollectionViewController!
     
     @IBOutlet weak var tokenGold: UIButton!
     @IBOutlet weak var tokenName: UITextField!
-    var tokens = ["coin", "coin", "coin"]
+    
+    var token = [
+                "name": "New Token",
+                "token": "coin",
+                "count": "0"
+                ]
+    
+    let tokens = ["coin", "coin", "coin", "coin", "coin"]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let navBar = UINavigationBar()
+        self.view.addSubview(navBar)
+        
+        title = "Create a token"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveToken))
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tokens.count
@@ -34,24 +51,19 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         }
         
         cell.tokenImage?.image = UIImage(named: tokens[indexPath.row])
-        cell.tokenNameLabel?.text = "Coin"
+        cell.tokenNameLabel?.text = tokens[indexPath.row]
         
         return cell
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        token["token"] = tokens[indexPath.row]
         
-        let navBar = UINavigationBar()
-        self.view.addSubview(navBar)
-        
-        title = "Create a token"
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editToken))
+        print("Current token is \(token)")
     }
 
-    @objc func editToken() {
-        
+    @objc func saveToken() {
+        token["name"] = tokenName?.text
     }
     
 

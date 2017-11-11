@@ -51,11 +51,7 @@ class ViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let vc = GameDetailController()
-//        vc.gameDetail = gameCollection[indexPath.row]
-//        navigationController?.pushViewController(vc, animated: true)
-        
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         self.performSegue(withIdentifier: "GameDetailViewSegue", sender: self)
     }
     
