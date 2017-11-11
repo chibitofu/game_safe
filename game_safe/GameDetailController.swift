@@ -10,22 +10,24 @@ import UIKit
 import CoreData
 
 class GameDetailCell: UITableViewCell {
+    var tapped: ((GameDetailCell, Bool) -> Void)?
     
     @IBOutlet weak var tokenImage: UIImageView!
     @IBOutlet weak var tokenName: UILabel!
     @IBOutlet weak var tokenCount: UILabel!
     
     @IBAction func countIncrease(_ sender: Any) {
-        //increase count function
+        tapped?(self, true)
     }
     
     @IBAction func countDecrease(_ sender: Any) {
-        //decrease count function
+        tapped?(self, false)
     }
+
 }
 
 class GameDetailController: UITableViewController, UITextFieldDelegate {
-    
+ 
     var container: NSPersistentContainer!
     var gameDetail = Game()
     var tokens = [ String: [String: String] ]()
@@ -77,7 +79,9 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TokenCell", for: indexPath) as? GameDetailCell else {
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
         }
-        
+        cell.tapped = { [unowned self] (selectedCell, isTrue) -> Void in
+            self.changeCounter(increaseCounter: isTrue)
+        }
         cell.tokenImage?.image = UIImage(named: "coin")
         cell.tokenName?.text = "coin"
         cell.tokenCount?.text = "25"
@@ -95,6 +99,36 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
         return documentsDirectory
     }
 
+    func changeCounter(increaseCounter: Bool) {
+        if increaseCounter {
+            print("Increase Counter")
+        } else {
+            print("Decrease Counter")
+        }
+
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
+    }
+    
+    func loadSavedData() {
+        let request = Game.createFetchRequest()
+        let sort = NSSortDescriptor(key: "date_created", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        do {
+            let fetchData = try container.viewContext.fetch(request)
+            print("Got \(gameDetail) commits.")
+            tableView.reloadData()
+        } catch {
+            print("Fetch failed")
+        }
+    }
+    
     /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

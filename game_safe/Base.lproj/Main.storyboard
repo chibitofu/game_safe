@@ -85,7 +85,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                             <state key="normal" title="+"/>
                                             <connections>
-                                                <action selector="countIncrease:" destination="f9D-pT-4bE" eventType="touchUpInside" id="gE3-ji-ecw"/>
+                                                <action selector="countIncrease:" destination="f9D-pT-4bE" eventType="touchUpInside" id="51E-Dz-Rwi"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEd-Aq-74g">
@@ -94,7 +94,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                             <state key="normal" title="-"/>
                                             <connections>
-                                                <action selector="countDecrease:" destination="f9D-pT-4bE" eventType="touchUpInside" id="Chr-c9-PGe"/>
+                                                <action selector="countDecrease:" destination="f9D-pT-4bE" eventType="touchUpInside" id="Suh-Q9-38u"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWA-LG-RvQ">
