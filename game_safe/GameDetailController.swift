@@ -26,23 +26,11 @@ class GameDetailCell: UITableViewCell {
 
 }
 
-class GameDetailController: UITableViewController, UITextFieldDelegate {
+class GameDetailController: UITableViewController {
  
     var container: NSPersistentContainer!
     var gameDetail = Game()
     var tokens = [ String: [String: String] ]()
-    
-//    struct gameInfo {
-//        var name: String
-//        var date: Date
-//        var token: [String: Int]
-//
-//        init(name: String, date: Date, token: [String: Int]) {
-//            self.name = name
-//            self.date = date
-//            self.token = token
-//        }
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +52,6 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
                 print("unresolved error \(error)")
             }
         }
-        
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -79,9 +66,11 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TokenCell", for: indexPath) as? GameDetailCell else {
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
         }
+        
         cell.tapped = { [unowned self] (selectedCell, isTrue) -> Void in
             self.changeCounter(increaseCounter: isTrue)
         }
+        
         cell.tokenImage?.image = UIImage(named: "coin")
         cell.tokenName?.text = "coin"
         cell.tokenCount?.text = "25"
@@ -90,7 +79,8 @@ class GameDetailController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func tokenCreate() {
-        
+         self.performSegue(withIdentifier: "TokenCreationViewSegue", sender: self)
+        //create token here
     }
     
     func getDocumentsDirectory() -> URL {
