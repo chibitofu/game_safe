@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -158,14 +160,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-LX-Jcx">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-LX-Jcx">
                                 <rect key="frame" x="20" y="131" width="68" height="28"/>
                                 <color key="backgroundColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="Uqp-kg-hyn"/>
                                 </constraints>
+                                <state key="normal" title="gold">
+                                    <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeTokenColorWithSender:" destination="nUr-0V-U7F" eventType="touchUpInside" id="kZx-qR-GnS"/>
+                                </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kuU-J9-QYv">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kuU-J9-QYv" customClass="TokenCreationCollectionView" customModule="game_safe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="167" width="414" height="569"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="RZK-rA-HcC">
@@ -189,12 +197,15 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="icm-62-DIi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="71" height="72"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="71" height="71"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="icm-62-DIi" secondAttribute="height" multiplier="1:1" id="81c-5B-VfG"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="9qj-RY-hFb" firstAttribute="top" secondItem="icm-62-DIi" secondAttribute="bottom" constant="3" id="4Cf-y5-eHF"/>
+                                            <constraint firstItem="9qj-RY-hFb" firstAttribute="top" secondItem="icm-62-DIi" secondAttribute="bottom" constant="4" id="4Cf-y5-eHF"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="9qj-RY-hFb" secondAttribute="bottom" constant="-4" id="8Da-JL-8do"/>
                                             <constraint firstItem="icm-62-DIi" firstAttribute="top" secondItem="iGI-Dz-2Qf" secondAttribute="top" id="Eef-9g-giD"/>
                                             <constraint firstItem="icm-62-DIi" firstAttribute="centerX" secondItem="9qj-RY-hFb" secondAttribute="centerX" id="Max-8K-YgE"/>
@@ -223,31 +234,46 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJi-CK-76h" userLabel="Token Silver">
+                                <rect key="frame" x="110" y="131" width="68" height="28"/>
+                                <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="silver">
+                                    <color key="titleColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeTokenColorWithSender:" destination="nUr-0V-U7F" eventType="touchUpInside" id="BYh-KL-UMH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="kuU-J9-QYv" firstAttribute="centerX" secondItem="HXD-uq-qgB" secondAttribute="centerX" id="04N-wV-UYi"/>
+                            <constraint firstItem="kuU-J9-QYv" firstAttribute="leading" secondItem="x94-Fr-9c7" secondAttribute="leading" id="3qU-fI-JYi"/>
+                            <constraint firstItem="VJi-CK-76h" firstAttribute="top" secondItem="1vi-LX-Jcx" secondAttribute="top" id="4Br-Vy-EKe"/>
+                            <constraint firstItem="kuU-J9-QYv" firstAttribute="top" secondItem="1vi-LX-Jcx" secondAttribute="bottom" constant="8" symbolic="YES" id="4G9-Kd-jaL"/>
                             <constraint firstItem="HXD-uq-qgB" firstAttribute="leading" secondItem="x94-Fr-9c7" secondAttribute="leadingMargin" id="9u3-JD-CuI"/>
-                            <constraint firstItem="kuU-J9-QYv" firstAttribute="leading" secondItem="x94-Fr-9c7" secondAttribute="leading" id="KNh-Mz-UJ7"/>
+                            <constraint firstAttribute="trailing" secondItem="kuU-J9-QYv" secondAttribute="trailing" id="K2H-2b-6A1"/>
                             <constraint firstItem="1vi-LX-Jcx" firstAttribute="top" secondItem="HXD-uq-qgB" secondAttribute="bottom" constant="15" id="MKD-9I-txG"/>
                             <constraint firstItem="HXD-uq-qgB" firstAttribute="leading" secondItem="1vi-LX-Jcx" secondAttribute="leading" id="NDT-w1-0QG"/>
-                            <constraint firstItem="HXD-uq-qgB" firstAttribute="centerX" secondItem="kuU-J9-QYv" secondAttribute="centerX" id="OXR-FN-gBP"/>
-                            <constraint firstItem="kuU-J9-QYv" firstAttribute="top" secondItem="1vi-LX-Jcx" secondAttribute="bottom" constant="8" symbolic="YES" id="Onl-Di-4Wz"/>
-                            <constraint firstItem="kuU-J9-QYv" firstAttribute="bottom" secondItem="P4s-KN-toJ" secondAttribute="bottom" id="V20-Lg-v6V"/>
+                            <constraint firstItem="kuU-J9-QYv" firstAttribute="top" secondItem="VJi-CK-76h" secondAttribute="bottom" constant="8" symbolic="YES" id="P61-Id-7ty"/>
+                            <constraint firstItem="VJi-CK-76h" firstAttribute="leading" secondItem="1vi-LX-Jcx" secondAttribute="trailing" constant="22" id="XLS-8R-K2e"/>
+                            <constraint firstItem="kuU-J9-QYv" firstAttribute="bottom" secondItem="P4s-KN-toJ" secondAttribute="bottom" id="Y2Q-HU-tMi"/>
                             <constraint firstItem="HXD-uq-qgB" firstAttribute="top" secondItem="P4s-KN-toJ" secondAttribute="top" constant="16" id="g2k-l8-pRf"/>
-                            <constraint firstAttribute="trailing" secondItem="kuU-J9-QYv" secondAttribute="trailing" id="tBT-4p-9rY"/>
+                            <constraint firstItem="VJi-CK-76h" firstAttribute="baseline" secondItem="1vi-LX-Jcx" secondAttribute="baseline" id="uM2-gg-6UY"/>
                             <constraint firstItem="P4s-KN-toJ" firstAttribute="trailing" secondItem="1vi-LX-Jcx" secondAttribute="trailing" constant="326" id="yhh-Bd-ckh"/>
+                            <constraint firstItem="VJi-CK-76h" firstAttribute="firstBaseline" secondItem="1vi-LX-Jcx" secondAttribute="firstBaseline" id="yp0-5T-8MS"/>
+                            <constraint firstItem="P4s-KN-toJ" firstAttribute="trailing" secondItem="VJi-CK-76h" secondAttribute="trailing" constant="236" id="zEv-zE-xq4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="P4s-KN-toJ"/>
                     </view>
                     <connections>
                         <outlet property="TokenViewCollection" destination="kuU-J9-QYv" id="0mT-pj-jGe"/>
-                        <outlet property="tokenGold" destination="1vi-LX-Jcx" id="aaf-43-W4G"/>
                         <outlet property="tokenName" destination="HXD-uq-qgB" id="kDy-Uk-S7n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5a-3f-8sm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2032.8" y="149.77511244377811"/>
+            <point key="canvasLocation" x="2031.8840579710147" y="149.18478260869566"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hjG-0T-Dr4">

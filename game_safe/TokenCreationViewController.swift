@@ -15,20 +15,34 @@ class TokenCreationCellController: UICollectionViewCell {
     
 }
 
+class TokenCreationCollectionView: UICollectionView {
+    func reloadCollectionView() {
+        self.reloadData()
+    }
+}
+
 class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
  
-    @IBOutlet weak var TokenViewCollection: UICollectionViewController!
+    @IBOutlet weak var TokenViewCollection: UICollectionView!
     
-    @IBOutlet weak var tokenGold: UIButton!
     @IBOutlet weak var tokenName: UITextField!
-    
+    @IBAction func changeTokenColor(sender: AnyObject) {
+        guard let button = sender as? UIButton else {
+            return
+        }
+        
+        color = button.title(for: .normal)!
+        TokenViewCollection.reloadData()
+    }
+
+    var color = "gold"
     var token = [
                 "name": "New Token",
-                "token": "coin",
+                "token": "coin_gold",
                 "count": "0"
                 ]
     
-    let tokens = ["coin", "coin", "coin", "coin", "coin"]
+    let tokens = ["coin", "pawn", "coin", "pawn", "coin"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,23 +64,22 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
         }
         
-        cell.tokenImage?.image = UIImage(named: tokens[indexPath.row])
+        cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
         cell.tokenNameLabel?.text = tokens[indexPath.row]
         
         return cell
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        token["token"] = tokens[indexPath.row]
+        token["token"] = "\(tokens[indexPath.row])_\(color)"
         
-        print("Current token is \(token)")
+        print("Current token is \(token)_\(color)")
     }
 
     @objc func saveToken() {
         token["name"] = tokenName?.text
     }
     
-
     /*
     // MARK: - Navigation
 
