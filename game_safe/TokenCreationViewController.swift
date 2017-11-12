@@ -93,7 +93,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     @objc func saveToken() {
         let currentToken = Token(context: self.container.viewContext)
         
-        tokenDictionary["name"] = tokenName?.text
+        tokenDictionary["name"] = tokenName.text
 
         self.save(currentGame: currentGame[0], currentToken: currentToken, gameName: gameName)
         

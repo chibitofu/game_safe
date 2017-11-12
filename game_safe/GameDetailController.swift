@@ -35,8 +35,7 @@ class GameDetailController: UITableViewController {
     var tokens = [TokenDetailItem]()
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+        super.viewWillAppear(true)
         tableView.reloadData()
     }
     
@@ -88,6 +87,10 @@ class GameDetailController: UITableViewController {
         return cell
     }
     
+    @objc func reloadTableview() {
+        tableView.reloadData()
+    }
+    
     @objc func tokenCreate() {
          self.performSegue(withIdentifier: "TokenCreationViewSegue", sender: self)
     }
@@ -130,7 +133,7 @@ class GameDetailController: UITableViewController {
             
             if !(tokenData != nil) {
                 return
-            } else if tokenData!.count > 1 {
+            } else  {
                 for token in tokenData! {
                     let name = token.name
                     let itemName = token.itemName
@@ -138,15 +141,8 @@ class GameDetailController: UITableViewController {
                     let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount)
                     tokens.append(newToken)
                 }
-            } else {
-                let token = tokenData![(tokenData?.startIndex)!]
-                let name = token.name
-                let itemName = token.itemName
-                let tokenCount = token.tokenCount
-                let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount)
-                tokens.append(newToken)
             }
-//            tableView.reloadData()
+            
         } catch {
             print("Fetch failed")
         }
