@@ -13,8 +13,8 @@ class GameDetailCell: UITableViewCell {
     var tapped: ((GameDetailCell, Bool) -> Void)?
     
     @IBOutlet weak var tokenImage: UIImageView!
-    @IBOutlet weak var tokenName: UILabel!
-    @IBOutlet weak var tokenCount: UILabel!
+    @IBOutlet weak var tokenNameLabel: UILabel!
+    @IBOutlet weak var tokenCountLabel: UILabel!
     
     @IBAction func countIncrease(_ sender: Any) {
         tapped?(self, true)
@@ -32,22 +32,16 @@ class GameDetailController: UITableViewController {
     
     var container: NSPersistentContainer!
     var gameDetail = Game()
-    var tokens = [[String: String]]()
+    var tokens = [TokenDetailItem]()
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tokens = [
-            [
-            "name": "coin",
-            "type": "coin_gold",
-            "count": "25"
-            ]
-        ]
         
         let navBar = UINavigationBar()
         self.view.addSubview(navBar)
@@ -64,6 +58,8 @@ class GameDetailController: UITableViewController {
                 print("unresolved error \(error)")
             }
         }
+        
+        loadSavedData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -85,16 +81,15 @@ class GameDetailController: UITableViewController {
         
         let currentToken = tokens[indexPath.row]
         
-        cell.tokenImage?.image = UIImage(named: currentToken["type"]!)
-        cell.tokenName?.text = currentToken["name"]
-        cell.tokenCount?.text = currentToken["count"]
+        cell.tokenImage?.image = UIImage(named: currentToken.itemName)
+        cell.tokenNameLabel?.text = currentToken.name
+        cell.tokenCountLabel?.text = currentToken.tokenCount
         
         return cell
     }
     
     @objc func tokenCreate() {
          self.performSegue(withIdentifier: "TokenCreationViewSegue", sender: self)
-        //create token here
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -120,59 +115,41 @@ class GameDetailController: UITableViewController {
         }
     }
     
-    func save(addToken game: Game, token: String) {
-//        game.name = gameName
-//        game.date_created = date
-//
-//        gameCollection.insert(game, at: 0)
-//
-//        if container.viewContext.hasChanges {
-//            do {
-//                try container.viewContext.save()
-//            } catch {
-//                print("An error occurred while saving: \(error)")
-//            }
-//        }
-    }
-    
     func loadSavedData() {
         let request = Game.createFetchRequest()
         let sort = NSSortDescriptor(key: "date_created", ascending: false)
-        request.sortDescriptors = [sort]
+        let filter = NSPredicate(format: "name = %@", "\(gameDetail.name.description)")
         
+        request.sortDescriptors = [sort]
+        request.predicate = filter
+
         do {
+            
             let fetchData = try container.viewContext.fetch(request)
-            print("Got \(gameDetail) commits.")
-            tableView.reloadData()
+            let tokenData = fetchData[0].tokens
+            
+            if !(tokenData != nil) {
+                return
+            } else if tokenData!.count > 1 {
+                for token in tokenData! {
+                    let name = token.name
+                    let itemName = token.itemName
+                    let tokenCount = token.tokenCount
+                    let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount)
+                    tokens.append(newToken)
+                }
+            } else {
+                let token = tokenData![(tokenData?.startIndex)!]
+                let name = token.name
+                let itemName = token.itemName
+                let tokenCount = token.tokenCount
+                let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount)
+                tokens.append(newToken)
+            }
+//            tableView.reloadData()
         } catch {
             print("Fetch failed")
         }
     }
     
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 }

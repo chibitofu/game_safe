@@ -17,9 +17,9 @@ extension Token {
         return NSFetchRequest<Token>(entityName: "Token")
     }
 
+    @NSManaged public var tokenCount: String
     @NSManaged public var name: String
-    @NSManaged public var count: String
-    @NSManaged public var type: String
-    @NSManaged public var game: Game
+    @NSManaged public var itemName: String
+    @NSManaged public var game: Game?
 
 }

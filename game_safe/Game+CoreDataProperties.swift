@@ -19,7 +19,7 @@ extension Game {
 
     @NSManaged public var date_created: Date
     @NSManaged public var name: String
-    @NSManaged public var tokens: NSSet?
+    @NSManaged public var tokens: Set<Token>?
 
 }
 
@@ -33,9 +33,9 @@ extension Game {
     @NSManaged public func removeFromTokens(_ value: Token)
 
     @objc(addTokens:)
-    @NSManaged public func addToTokens(_ values: NSSet)
+    @NSManaged public func addToTokens(_ values: Set<Token>)
 
     @objc(removeTokens:)
-    @NSManaged public func removeFromTokens(_ values: NSSet)
+    @NSManaged public func removeFromTokens(_ values: Set<Token>)
 
 }

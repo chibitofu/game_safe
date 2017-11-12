@@ -39,8 +39,8 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var color = "gold"
     var tokenDictionary = [
                 "name": "New Token",
-                "type": "coin_gold",
-                "count": "1"
+                "itemName": "coin_gold",
+                "tokenCount": "1"
                 ]
     
     var container: NSPersistentContainer!
@@ -87,7 +87,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tokenDictionary["type"] = "\(tokens[indexPath.row])_\(color)"
+        tokenDictionary["itemName"] = "\(tokens[indexPath.row])_\(color)"
     }
 
     @objc func saveToken() {
@@ -100,18 +100,18 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         self.performSegue(withIdentifier: "unwindToGameDetail", sender: self)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "unwindToGameDetail" {
-            let vc = segue.destination as! GameDetailController
-            vc.tokens.append(tokenDictionary)
-            print(vc.tokens)
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "unwindToGameDetail" {
+//            let vc = segue.destination as! GameDetailController
+//            vc.tokens.append(tokenDictionary)
+//            print(vc.tokens)
+//        }
+//    }
     
     func save(currentGame game: Game, currentToken token: Token, gameName: String) {
         token.name = tokenDictionary["name"]!
-        token.type = tokenDictionary["type"]!
-        token.count = tokenDictionary["count"]!
+        token.itemName = tokenDictionary["itemName"]!
+        token.tokenCount = tokenDictionary["tokenCount"]!
         
         game.addToTokens(token)
         
@@ -136,15 +136,5 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             print("Fetch failed")
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

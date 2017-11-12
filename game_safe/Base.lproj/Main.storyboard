@@ -132,9 +132,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="tokenCount" destination="bmV-Ce-ytr" id="RJP-W6-TXt"/>
+                                    <outlet property="tokenCountLabel" destination="bmV-Ce-ytr" id="9tC-sk-eEI"/>
                                     <outlet property="tokenImage" destination="gZQ-13-eQi" id="WWE-73-h5b"/>
-                                    <outlet property="tokenName" destination="GWA-LG-RvQ" id="mnE-4h-hHr"/>
+                                    <outlet property="tokenNameLabel" destination="GWA-LG-RvQ" id="OrL-tg-Kq9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

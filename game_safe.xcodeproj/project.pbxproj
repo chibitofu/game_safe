@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D671E0B30140F26D8F04F9E /* Pods_game_safe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D1F87643927248426D3128 /* Pods_game_safe.framework */; };
 		608B0131FEC5D47FA99B4450 /* Pods_game_safeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E687DC95FB17BE417CCAB9 /* Pods_game_safeUITests.framework */; };
+		7307FD4F1FB883E4006E9313 /* TokenDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */; };
 		736637F11FB847DC008B295E /* Token+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736637EF1FB847DC008B295E /* Token+CoreDataClass.swift */; };
 		736637F21FB847DC008B295E /* Token+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736637F01FB847DC008B295E /* Token+CoreDataProperties.swift */; };
 		73A930381FB6E7AC00FE569F /* TokenCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A930371FB6E7AC00FE569F /* TokenCreationViewController.swift */; };
@@ -48,6 +49,7 @@
 		2874544DA66701616B0B2C8E /* Pods-game_safeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-game_safeUITests/Pods-game_safeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2C1A0AB7DC1983E5230D7E98 /* Pods-game_safe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-game_safe/Pods-game_safe.debug.xcconfig"; sourceTree = "<group>"; };
 		4D1218F38D296F48DBC94800 /* Pods-game_safe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safe.release.xcconfig"; path = "Pods/Target Support Files/Pods-game_safe/Pods-game_safe.release.xcconfig"; sourceTree = "<group>"; };
+		7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailItem.swift; sourceTree = "<group>"; };
 		736637EF1FB847DC008B295E /* Token+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token+CoreDataClass.swift"; sourceTree = "<group>"; };
 		736637F01FB847DC008B295E /* Token+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73A930371FB6E7AC00FE569F /* TokenCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenCreationViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				73E51A911FAF2F3F0015EF27 /* ViewController.swift */,
 				73E51B6D1FB4B2850015EF27 /* GameDetailController.swift */,
 				73A930371FB6E7AC00FE569F /* TokenCreationViewController.swift */,
+				7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */,
 				73E51A931FAF2F3F0015EF27 /* Main.storyboard */,
 				73E51A991FAF2F3F0015EF27 /* Assets.xcassets */,
 				73E51A9B1FAF2F3F0015EF27 /* LaunchScreen.storyboard */,
@@ -485,6 +488,7 @@
 				73E51B6E1FB4B2850015EF27 /* GameDetailController.swift in Sources */,
 				73E51A901FAF2F3F0015EF27 /* AppDelegate.swift in Sources */,
 				73E51A981FAF2F3F0015EF27 /* game_safe.xcdatamodeld in Sources */,
+				7307FD4F1FB883E4006E9313 /* TokenDetailItem.swift in Sources */,
 				73E51B6A1FB3B6790015EF27 /* Game+CoreDataProperties.swift in Sources */,
 				736637F21FB847DC008B295E /* Token+CoreDataProperties.swift in Sources */,
 				73A930381FB6E7AC00FE569F /* TokenCreationViewController.swift in Sources */,
