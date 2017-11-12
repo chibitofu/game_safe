@@ -24,7 +24,6 @@ class TokenCreationCollectionView: UICollectionView {
 class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
  
     @IBOutlet weak var TokenViewCollection: UICollectionView!
-    
     @IBOutlet weak var tokenName: UITextField!
     @IBAction func changeTokenColor(sender: AnyObject) {
         guard let button = sender as? UIButton else {
@@ -78,6 +77,15 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
 
     @objc func saveToken() {
         token["name"] = tokenName?.text
+        self.performSegue(withIdentifier: "unwindToGameDetail", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToGameDetail" {
+            let vc = segue.destination as! GameDetailController
+            vc.tokens.append(token)
+            print(vc.tokens)
+        }
     }
     
     /*

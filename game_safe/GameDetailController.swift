@@ -27,15 +27,23 @@ class GameDetailCell: UITableViewCell {
 }
 
 class GameDetailController: UITableViewController {
- 
+    
+    @IBAction func unwindToGameDetail(segue: UIStoryboardSegue) {}
+    
     var container: NSPersistentContainer!
     var gameDetail = Game()
-    var tokens = [ String: [String: String] ]()
+    var tokens = [[String: String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tokens = ["Coin": ["Count": "25"]]
+        tokens = [
+            [
+            "name": "coin",
+            "token": "coin_gold",
+            "count": "25"
+            ]
+        ]
         
         let navBar = UINavigationBar()
         self.view.addSubview(navBar)
@@ -71,9 +79,11 @@ class GameDetailController: UITableViewController {
             self.changeCounter(increaseCounter: isTrue)
         }
         
-        cell.tokenImage?.image = UIImage(named: "coin")
-        cell.tokenName?.text = "coin"
-        cell.tokenCount?.text = "25"
+        let currentToken = tokens[indexPath.row]
+        
+        cell.tokenImage?.image = UIImage(named: currentToken["token"]!)
+        cell.tokenName?.text = currentToken["name"]
+        cell.tokenCount?.text = currentToken["count"]
         
         return cell
     }

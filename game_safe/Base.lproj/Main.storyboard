@@ -269,11 +269,13 @@
                     <connections>
                         <outlet property="TokenViewCollection" destination="kuU-J9-QYv" id="0mT-pj-jGe"/>
                         <outlet property="tokenName" destination="HXD-uq-qgB" id="kDy-Uk-S7n"/>
+                        <segue destination="QMm-Vw-uKh" kind="unwind" identifier="unwindToGameDetail" unwindAction="unwindToGameDetailWithSegue:" id="zjY-ro-gV1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5a-3f-8sm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="QMm-Vw-uKh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2031.8840579710147" y="149.18478260869566"/>
+            <point key="canvasLocation" x="1970" y="153"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hjG-0T-Dr4">
