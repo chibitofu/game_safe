@@ -34,13 +34,17 @@ class GameDetailController: UITableViewController {
     var gameDetail = Game()
     var tokens = [[String: String]]()
     
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tokens = [
             [
             "name": "coin",
-            "token": "coin_gold",
+            "type": "coin_gold",
             "count": "25"
             ]
         ]
@@ -81,7 +85,7 @@ class GameDetailController: UITableViewController {
         
         let currentToken = tokens[indexPath.row]
         
-        cell.tokenImage?.image = UIImage(named: currentToken["token"]!)
+        cell.tokenImage?.image = UIImage(named: currentToken["type"]!)
         cell.tokenName?.text = currentToken["name"]
         cell.tokenCount?.text = currentToken["count"]
         
@@ -93,10 +97,11 @@ class GameDetailController: UITableViewController {
         //create token here
     }
     
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TokenCreationViewSegue" {
+            let vc = segue.destination as! TokenCreationViewController
+            vc.gameName = gameDetail.name
+        }
     }
 
     func changeCounter(increaseCounter: Bool) {
@@ -113,6 +118,21 @@ class GameDetailController: UITableViewController {
                 print("An error occurred while saving: \(error)")
             }
         }
+    }
+    
+    func save(addToken game: Game, token: String) {
+//        game.name = gameName
+//        game.date_created = date
+//
+//        gameCollection.insert(game, at: 0)
+//
+//        if container.viewContext.hasChanges {
+//            do {
+//                try container.viewContext.save()
+//            } catch {
+//                print("An error occurred while saving: \(error)")
+//            }
+//        }
     }
     
     func loadSavedData() {

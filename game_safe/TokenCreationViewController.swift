@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TokenCreationCellController: UICollectionViewCell {
     
@@ -33,25 +34,41 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         color = button.title(for: .normal)!
         TokenViewCollection.reloadData()
     }
-
+    
+    var gameName = String()
     var color = "gold"
-    var token = [
+    var tokenDictionary = [
                 "name": "New Token",
-                "token": "coin_gold",
-                "count": "0"
+                "type": "coin_gold",
+                "count": "1"
                 ]
     
+    var container: NSPersistentContainer!
+    var currentGame = [Game]()
+    var tokenEntity = Token()
     let tokens = ["coin", "pawn", "coin", "pawn", "coin"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        container = NSPersistentContainer(name: "game_safe")
+        
+        container.loadPersistentStores { storeDescription, error in
+            self.container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+            
+            if let error = error {
+                print("unresolved error \(error)")
+            }
+        }
         
         let navBar = UINavigationBar()
         self.view.addSubview(navBar)
         
         title = "Create a token"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveToken))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToken))
+        
+        loadSavedData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -70,21 +87,53 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        token["token"] = "\(tokens[indexPath.row])_\(color)"
-        
-        print("Current token is \(token)_\(color)")
+        tokenDictionary["type"] = "\(tokens[indexPath.row])_\(color)"
     }
 
     @objc func saveToken() {
-        token["name"] = tokenName?.text
+        let currentToken = Token(context: self.container.viewContext)
+        
+        tokenDictionary["name"] = tokenName?.text
+
+        self.save(currentGame: currentGame[0], currentToken: currentToken, gameName: gameName)
+        
         self.performSegue(withIdentifier: "unwindToGameDetail", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToGameDetail" {
             let vc = segue.destination as! GameDetailController
-            vc.tokens.append(token)
+            vc.tokens.append(tokenDictionary)
             print(vc.tokens)
+        }
+    }
+    
+    func save(currentGame game: Game, currentToken token: Token, gameName: String) {
+        token.name = tokenDictionary["name"]!
+        token.type = tokenDictionary["type"]!
+        token.count = tokenDictionary["count"]!
+        
+        game.addToTokens(token)
+        
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
+    }
+    
+    func loadSavedData() {
+        let request = Game.createFetchRequest()
+        let filter = NSPredicate(format: "name = %@", gameName)
+        request.predicate = filter
+        
+        do {
+            currentGame = try container.viewContext.fetch(request)
+            print("Got \(currentGame[0].name.description)")
+        } catch {
+            print("Fetch failed")
         }
     }
     
