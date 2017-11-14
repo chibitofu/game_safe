@@ -2,7 +2,7 @@
 //  Token+CoreDataProperties.swift
 //  game_safe
 //
-//  Created by Erin Moon on 11/12/17.
+//  Created by Erin Moon on 11/13/17.
 //  Copyright © 2017 Erin Moon. All rights reserved.
 //
 //
@@ -17,9 +17,15 @@ extension Token {
         return NSFetchRequest<Token>(entityName: "Token")
     }
 
-    @NSManaged public var tokenCount: String
-    @NSManaged public var name: String
     @NSManaged public var itemName: String
+    @NSManaged public var name: String
+    @NSManaged public var count: Int32
+    @NSManaged public var createdAt: Date
     @NSManaged public var game: Game?
+    
+    var tokenCount : Int {
+        get { return Int(count) }
+        set { count = Int32(newValue) }
+    }
 
 }

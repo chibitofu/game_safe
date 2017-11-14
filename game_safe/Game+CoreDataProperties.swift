@@ -2,7 +2,7 @@
 //  Game+CoreDataProperties.swift
 //  game_safe
 //
-//  Created by Erin Moon on 11/12/17.
+//  Created by Erin Moon on 11/13/17.
 //  Copyright © 2017 Erin Moon. All rights reserved.
 //
 //
@@ -17,7 +17,7 @@ extension Game {
         return NSFetchRequest<Game>(entityName: "Game")
     }
 
-    @NSManaged public var date_created: Date
+    @NSManaged public var createdAt: Date
     @NSManaged public var name: String
     @NSManaged public var tokens: Set<Token>?
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Game" representedClassName="Game" syncable="YES">
-        <attribute name="date_created" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" minValueString="1" maxValueString="50" syncable="YES"/>
         <relationship name="tokens" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Token" inverseName="game" inverseEntity="Token" syncable="YES"/>
         <uniquenessConstraints>
@@ -11,13 +11,14 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Token" representedClassName="Token" syncable="YES">
+        <attribute name="count" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="itemName" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="tokenCount" attributeType="String" syncable="YES"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="tokens" inverseEntity="Game" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Game" positionX="-126" positionY="-22" width="128" height="88"/>
-        <element name="Token" positionX="126" positionY="101" width="128" height="103"/>
+        <element name="Game" positionX="-126" positionY="-22" width="128" height="90"/>
+        <element name="Token" positionX="126" positionY="101" width="128" height="120"/>
     </elements>
 </model>

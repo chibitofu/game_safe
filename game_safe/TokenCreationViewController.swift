@@ -37,11 +37,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     
     var gameName = String()
     var color = "gold"
-    var tokenDictionary = [
-                "name": "New Token",
-                "itemName": "coin_gold",
-                "tokenCount": "1"
-                ]
+    var tokenDefault = TokenDetailItem(name: "New Token", itemName: "coin_gold", tokenCount: 1, tokenCreatedAt: Date())
     
     var container: NSPersistentContainer!
     var currentGame = [Game]()
@@ -87,13 +83,15 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tokenDictionary["itemName"] = "\(tokens[indexPath.row])_\(color)"
+        tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
     }
 
     @objc func saveToken() {
         let currentToken = Token(context: self.container.viewContext)
         
-        tokenDictionary["name"] = tokenName.text
+        if !(tokenName.text?.isEmpty)! {
+            tokenDefault.name = tokenName.text!
+        }
 
         self.save(currentGame: currentGame[0], currentToken: currentToken, gameName: gameName)
         
@@ -109,9 +107,10 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
 //    }
     
     func save(currentGame game: Game, currentToken token: Token, gameName: String) {
-        token.name = tokenDictionary["name"]!
-        token.itemName = tokenDictionary["itemName"]!
-        token.tokenCount = tokenDictionary["tokenCount"]!
+        token.name = tokenDefault.name
+        token.itemName = tokenDefault.itemName
+        token.tokenCount = tokenDefault.tokenCount
+        token.createdAt = Date()
         
         game.addToTokens(token)
         

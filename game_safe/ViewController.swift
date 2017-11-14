@@ -88,7 +88,7 @@ class ViewController: UITableViewController {
         let date = Date()
         
         game.name = gameName
-        game.date_created = date
+        game.createdAt = date
         
         gameCollection.insert(game, at: 0)
         
@@ -103,7 +103,7 @@ class ViewController: UITableViewController {
     
     func loadSavedData() {
         let request = Game.createFetchRequest()
-        let sort = NSSortDescriptor(key: "date_created", ascending: false)
+        let sort = NSSortDescriptor(key: "createdAt", ascending: false)
         request.sortDescriptors = [sort]
         
         do {

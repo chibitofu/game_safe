@@ -11,11 +11,13 @@ import UIKit
 class TokenDetailItem: NSObject {
     var name: String
     var itemName: String
-    var tokenCount: String
+    var tokenCount: Int
+    var tokenCreatedAt: Date
     
-    init(name: String, itemName: String, tokenCount: String) {
+    init(name: String, itemName: String, tokenCount: Int, tokenCreatedAt: Date) {
         self.name = name
         self.itemName = itemName
         self.tokenCount = tokenCount
+        self.tokenCreatedAt = tokenCreatedAt
     }
 }

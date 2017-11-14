@@ -75,14 +75,14 @@ class GameDetailController: UITableViewController {
         }
         
         cell.tapped = { [unowned self] (selectedCell, isTrue) -> Void in
-            self.changeCounter(increaseCounter: isTrue)
+            self.changeCounter(increaseCounter: isTrue, cell: cell, index: indexPath.row, sender: self)
         }
         
         let currentToken = tokens[indexPath.row]
         
         cell.tokenImage?.image = UIImage(named: currentToken.itemName)
         cell.tokenNameLabel?.text = currentToken.name
-        cell.tokenCountLabel?.text = currentToken.tokenCount
+        cell.tokenCountLabel?.text = String(currentToken.tokenCount)
         
         return cell
     }
@@ -102,11 +102,23 @@ class GameDetailController: UITableViewController {
         }
     }
 
-    func changeCounter(increaseCounter: Bool) {
-        if increaseCounter {
-            print("Increase Counter")
-        } else {
-            print("Decrease Counter")
+    func changeCounter(increaseCounter: Bool, cell: GameDetailCell, index: Int, sender: Any) {
+        let request = Token.createFetchRequest()
+        let filter = NSPredicate(format: "name = %@", "\(tokens[index].name)")
+        request.predicate = filter
+        
+        do {
+            let currentToken = try container.viewContext.fetch(request)
+            if increaseCounter {
+                currentToken[0].tokenCount += 1
+                
+            } else {
+                currentToken[0].tokenCount -= 1
+            }
+            
+            cell.tokenCountLabel?.text = String(currentToken[0].tokenCount)
+        } catch {
+            print("Fetch failed")
         }
 
         if container.viewContext.hasChanges {
@@ -118,12 +130,27 @@ class GameDetailController: UITableViewController {
         }
     }
     
+//    func save(addGame game: Game, gameName: String) {
+//        let date = Date()
+//
+//        game.name = gameName
+//        game.date_created = date
+//
+//        gameCollection.insert(game, at: 0)
+//
+//        if container.viewContext.hasChanges {
+//            do {
+//                try container.viewContext.save()
+//            } catch {
+//                print("An error occurred while saving: \(error)")
+//            }
+//        }
+//    }
+    
     func loadSavedData() {
         let request = Game.createFetchRequest()
-        let sort = NSSortDescriptor(key: "date_created", ascending: false)
         let filter = NSPredicate(format: "name = %@", "\(gameDetail.name.description)")
-        
-        request.sortDescriptors = [sort]
+
         request.predicate = filter
 
         do {
@@ -138,8 +165,10 @@ class GameDetailController: UITableViewController {
                     let name = token.name
                     let itemName = token.itemName
                     let tokenCount = token.tokenCount
-                    let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount)
+                    let tokenCreatedAt = token.createdAt
+                    let newToken = TokenDetailItem(name: name, itemName: itemName, tokenCount: tokenCount, tokenCreatedAt: tokenCreatedAt)
                     tokens.append(newToken)
+                    tokens = tokens.sorted(by: {$0.tokenCreatedAt > $1.tokenCreatedAt})
                 }
             }
             
