@@ -98,13 +98,12 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         self.performSegue(withIdentifier: "unwindToGameDetail", sender: self)
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "unwindToGameDetail" {
-//            let vc = segue.destination as! GameDetailController
-//            vc.tokens.append(tokenDictionary)
-//            print(vc.tokens)
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToGameDetail" {
+            let vc = segue.destination as! GameDetailController
+            vc.viewDidLoad()
+        }
+    }
     
     func save(currentGame game: Game, currentToken token: Token, gameName: String) {
         token.name = tokenDefault.name

@@ -35,12 +35,15 @@ class GameDetailController: UITableViewController {
     var tokens = [TokenDetailItem]()
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        tableView.reloadData()
+        super.viewDidAppear(true)
+        
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tokens.removeAll(keepingCapacity: true)
         
         let navBar = UINavigationBar()
         self.view.addSubview(navBar)
@@ -87,8 +90,12 @@ class GameDetailController: UITableViewController {
         return cell
     }
     
-    @objc func reloadTableview() {
-        tableView.reloadData()
+    func reloadTableview() {
+        let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+        }
+       
     }
     
     @objc func tokenCreate() {
@@ -154,7 +161,6 @@ class GameDetailController: UITableViewController {
                     tokens = tokens.sorted(by: {$0.tokenCreatedAt > $1.tokenCreatedAt})
                 }
             }
-            
         } catch {
             print("Fetch failed")
         }
