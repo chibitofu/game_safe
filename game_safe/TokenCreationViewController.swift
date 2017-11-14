@@ -30,19 +30,31 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         guard let button = sender as? UIButton else {
             return
         }
-        
+        buttonClicked(sender: button)
         color = button.title(for: .normal)!
+        
+        for views in self.view.subviews as [UIView] {
+            if let buttonTag = views as? UIButton {
+                if (buttonTag.viewWithTag(2) != nil) {
+                    buttonTag.backgroundColor = buttonTag.backgroundColor?.lighter(by: 30)
+                    buttonTag.tag = 1
+                }
+            }
+        }
+        
+        button.tag = 2
+        button.backgroundColor = button.backgroundColor?.darker(by: 30)
         TokenViewCollection.reloadData()
     }
     
     var gameName = String()
     var color = "gold"
     var tokenDefault = TokenDetailItem(name: "New Token", itemName: "coin_gold", tokenCount: 1, tokenCreatedAt: Date())
-    
     var container: NSPersistentContainer!
     var currentGame = [Game]()
     var tokenEntity = Token()
     let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
+    var isHighLighted:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +144,18 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             print("Got \(currentGame[0].name.description)")
         } catch {
             print("Fetch failed")
+        }
+    }
+    
+    func buttonClicked(sender: UIButton) {
+        DispatchQueue.main.async() {
+            if self.isHighLighted == false {
+                sender.isHighlighted = true
+                self.isHighLighted = true
+            } else {
+                sender.isHighlighted = false
+                self.isHighLighted = false
+            }
         }
     }
 
