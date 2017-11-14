@@ -66,6 +66,8 @@ class ViewController: UITableViewController {
             
             self.save(addGame: currentGame, gameName: nameToSave)
             self.tableView.reloadData()
+            
+            self.performSegue(withIdentifier: "GameDetailViewSegue", sender: self)
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .default)
@@ -73,6 +75,7 @@ class ViewController: UITableViewController {
         ac.addTextField()
         ac.addAction(save)
         ac.addAction(cancel)
+        ac.textFields?.first?.autocapitalizationType = .sentences
         
         present(ac, animated: true)
     }
@@ -80,7 +83,13 @@ class ViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GameDetailViewSegue" {
             let vc = segue.destination as! GameDetailController
-            vc.gameDetail = gameCollection[self.tableView.indexPathForSelectedRow!.row]
+            
+            if ((self.tableView.indexPathForSelectedRow) != nil) {
+                vc.gameDetail = gameCollection[self.tableView.indexPathForSelectedRow!.row]
+            } else {
+                vc.gameDetail = gameCollection[0]
+            }
+            
         }
     }
     

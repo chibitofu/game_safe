@@ -130,23 +130,6 @@ class GameDetailController: UITableViewController {
         }
     }
     
-//    func save(addGame game: Game, gameName: String) {
-//        let date = Date()
-//
-//        game.name = gameName
-//        game.date_created = date
-//
-//        gameCollection.insert(game, at: 0)
-//
-//        if container.viewContext.hasChanges {
-//            do {
-//                try container.viewContext.save()
-//            } catch {
-//                print("An error occurred while saving: \(error)")
-//            }
-//        }
-//    }
-    
     func loadSavedData() {
         let request = Game.createFetchRequest()
         let filter = NSPredicate(format: "name = %@", "\(gameDetail.name.description)")
