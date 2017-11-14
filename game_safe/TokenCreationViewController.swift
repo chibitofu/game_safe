@@ -42,7 +42,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var container: NSPersistentContainer!
     var currentGame = [Game]()
     var tokenEntity = Token()
-    let tokens = ["coin", "pawn", "coin", "pawn", "coin"]
+    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
