@@ -90,14 +90,6 @@ class GameDetailController: UITableViewController {
         return cell
     }
     
-    func reloadTableview() {
-        let when = DispatchTime.now() + 1 // change 2 to desired number of seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            
-        }
-       
-    }
-    
     @objc func tokenCreate() {
          self.performSegue(withIdentifier: "TokenCreationViewSegue", sender: self)
     }

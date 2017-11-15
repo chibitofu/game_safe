@@ -9,27 +9,29 @@
 import UIKit
 import CoreData
 
-class TokenCreationCellController: UICollectionViewCell {
+class TokenCellController: UICollectionViewCell {
     
     @IBOutlet weak var tokenImage: UIImageView!
     @IBOutlet weak var tokenNameLabel: UILabel!
+}
+
+//class TokenCreationCollectionView: UICollectionView {
+//    func reloadCollectionView() {
+//        self.reloadData()
+//    }
+//}
+
+class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-}
-
-class TokenCreationCollectionView: UICollectionView {
-    func reloadCollectionView() {
-        self.reloadData()
-    }
-}
-
-class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
- 
-    @IBOutlet weak var TokenViewCollection: UICollectionView!
+    let layout = UICollectionViewFlowLayout()
+    
+//    @IBOutlet weak var TokenViewCollection: UICollectionView!
     @IBOutlet weak var tokenName: UITextField!
     @IBAction func changeTokenColor(sender: AnyObject) {
         guard let button = sender as? UIButton else {
             return
         }
+        
         buttonClicked(sender: button)
         color = button.title(for: .normal)!
         
@@ -44,8 +46,22 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         
         button.tag = 2
         button.backgroundColor = button.backgroundColor?.darker(by: 30)
-        TokenViewCollection.reloadData()
+        tokenCollectionView.reloadData()
     }
+    
+    func tokenButtonHighlight(sender: Any, indexPath: IndexPath) {
+        let cell =  collectionView(tokenCollectionView, cellForItemAt: indexPath) as UICollectionViewCell
+        cell.layer.borderWidth = 4.0
+        cell.layer.borderColor = UIColor.gray.cgColor
+        cell.backgroundColor = UIColor.blue
+
+        tokenCollectionView.reloadItems(at: [indexPath])
+        
+        print("tapped")
+        print(cell.layer.borderWidth)
+    }
+    
+    @IBOutlet weak var tokenCollectionView: UICollectionView!
     
     var gameName = String()
     var color = "gold"
@@ -55,10 +71,16 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var tokenEntity = Token()
     let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
     var isHighLighted:Bool = false
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tokenCollectionView.dataSource = self
+        tokenCollectionView.delegate = self
         
+        self.view.addSubview(tokenCollectionView)
+ 
         container = NSPersistentContainer(name: "game_safe")
         
         container.loadPersistentStores { storeDescription, error in
@@ -67,6 +89,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             if let error = error {
                 print("unresolved error \(error)")
             }
+            
         }
         
         let navBar = UINavigationBar()
@@ -84,18 +107,39 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TokenViewCell", for: indexPath) as? TokenCreationCellController else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TokenViewCell", for: indexPath) as? TokenCellController else {
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
         }
-        
+ 
         cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
         cell.tokenNameLabel?.text = tokens[indexPath.row]
-        
+ 
         return cell
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+        
+        
+        for cell in tokenCollectionView.visibleCells {
+            if cell.tag == 2 {
+                cell.layer.borderWidth = 0
+                cell.layer.borderColor = .none
+                cell.backgroundColor = .none
+                cell.tag = 1
+            }
+        }
+        
+        if let selectedCell = tokenCollectionView.cellForItem(at: indexPath) {
+            if selectedCell.tag == 1 {
+                selectedCell.layer.borderWidth = 4
+                selectedCell.layer.borderColor = UIColor.red.cgColor
+                selectedCell.backgroundColor = UIColor.blue
+                selectedCell.tag = 2
+            }
+
+        }
+
     }
 
     @objc func saveToken() {
