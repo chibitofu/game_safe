@@ -10,29 +10,19 @@ import UIKit
 import CoreData
 
 class TokenCellController: UICollectionViewCell {
-    
     @IBOutlet weak var tokenImage: UIImageView!
     @IBOutlet weak var tokenNameLabel: UILabel!
 }
 
-//class TokenCreationCollectionView: UICollectionView {
-//    func reloadCollectionView() {
-//        self.reloadData()
-//    }
-//}
-
 class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    let layout = UICollectionViewFlowLayout()
-    
-//    @IBOutlet weak var TokenViewCollection: UICollectionView!
+    @IBOutlet weak var tokenCollectionView: UICollectionView!
     @IBOutlet weak var tokenName: UITextField!
     @IBAction func changeTokenColor(sender: AnyObject) {
         guard let button = sender as? UIButton else {
             return
         }
         
-        buttonClicked(sender: button)
         color = button.title(for: .normal)!
         
         for views in self.view.subviews as [UIView] {
@@ -46,58 +36,46 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         
         button.tag = 2
         button.backgroundColor = button.backgroundColor?.darker(by: 30)
-        tokenCollectionView.reloadData()
-    }
-    
-    func tokenButtonHighlight(sender: Any, indexPath: IndexPath) {
-        let cell =  collectionView(tokenCollectionView, cellForItemAt: indexPath) as UICollectionViewCell
-        cell.layer.borderWidth = 4.0
-        cell.layer.borderColor = UIColor.gray.cgColor
-        cell.backgroundColor = UIColor.blue
-
-        tokenCollectionView.reloadItems(at: [indexPath])
         
-        print("tapped")
-        print(cell.layer.borderWidth)
+        tokenCollectionView.reloadData()
+                    print(tokenDefault.itemName)
     }
-    
-    @IBOutlet weak var tokenCollectionView: UICollectionView!
-    
+
     var gameName = String()
     var color = "gold"
     var tokenDefault = TokenDetailItem(name: "New Token", itemName: "coin_gold", tokenCount: 1, tokenCreatedAt: Date())
     var container: NSPersistentContainer!
-    var currentGame = [Game]()
+    var currentGame = Game()
     var tokenEntity = Token()
     let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
-    var isHighLighted:Bool = false
-
+    var currentlySelectedToken =  UICollectionViewCell()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tokenCollectionView.dataSource = self
-        tokenCollectionView.delegate = self
         
-        self.view.addSubview(tokenCollectionView)
- 
+        //Connect to Core Data Enitity
         container = NSPersistentContainer(name: "game_safe")
-        
         container.loadPersistentStores { storeDescription, error in
             self.container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
             
             if let error = error {
                 print("unresolved error \(error)")
             }
-            
         }
         
+        //Create navBar
         let navBar = UINavigationBar()
         self.view.addSubview(navBar)
         
         title = "Create a token"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToken))
+        
+        //Connect collection view to controller
+        tokenCollectionView.dataSource = self
+        tokenCollectionView.delegate = self
+        
+        self.view.addSubview(tokenCollectionView)
         
         loadSavedData()
     }
@@ -113,33 +91,40 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
  
         cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
         cell.tokenNameLabel?.text = tokens[indexPath.row]
- 
+        
         return cell
     }
     
     func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+
+        resetHighlightTokenCell(tokenCollection: tokenCollectionView.visibleCells)
         
-        
-        for cell in tokenCollectionView.visibleCells {
-            if cell.tag == 2 {
+        if let selectedCell = tokenCollectionView.cellForItem(at: indexPath) {
+            highlightTokenCell(token: selectedCell)
+        }
+    }
+    
+    func resetHighlightTokenCell(tokenCollection: [UICollectionViewCell]) {
+        for cell in tokenCollection {
+            if cell.tag == 4 {
+                cell.layer.cornerRadius = 0
                 cell.layer.borderWidth = 0
                 cell.layer.borderColor = .none
                 cell.backgroundColor = .none
-                cell.tag = 1
+                cell.tag = 3
             }
         }
-        
-        if let selectedCell = tokenCollectionView.cellForItem(at: indexPath) {
-            if selectedCell.tag == 1 {
-                selectedCell.layer.borderWidth = 4
-                selectedCell.layer.borderColor = UIColor.red.cgColor
-                selectedCell.backgroundColor = UIColor.blue
-                selectedCell.tag = 2
-            }
+    }
 
+    func highlightTokenCell(token: UICollectionViewCell) {
+        if token.tag == 3 {
+            token.layer.cornerRadius = 10
+            token.layer.borderWidth = 2
+            token.layer.borderColor = UIColor.lightGray.cgColor
+            token.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+            token.tag = 4
         }
-
     }
 
     @objc func saveToken() {
@@ -149,7 +134,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             tokenDefault.name = tokenName.text!
         }
 
-        self.save(currentGame: currentGame[0], currentToken: currentToken, gameName: gameName)
+        self.save(currentGame: currentGame, currentToken: currentToken)
         
         self.performSegue(withIdentifier: "unwindToGameDetail", sender: self)
     }
@@ -161,7 +146,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         }
     }
     
-    func save(currentGame game: Game, currentToken token: Token, gameName: String) {
+    func save(currentGame game: Game, currentToken token: Token) {
         token.name = tokenDefault.name
         token.itemName = tokenDefault.itemName
         token.tokenCount = tokenDefault.tokenCount
@@ -182,24 +167,12 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         let request = Game.createFetchRequest()
         let filter = NSPredicate(format: "name = %@", gameName)
         request.predicate = filter
-        
+
         do {
-            currentGame = try container.viewContext.fetch(request)
-            print("Got \(currentGame[0].name.description)")
+            currentGame = (try container.viewContext.fetch(request))[0]
+            print("Got \(currentGame.name.description)")
         } catch {
             print("Fetch failed")
-        }
-    }
-    
-    func buttonClicked(sender: UIButton) {
-        DispatchQueue.main.async() {
-            if self.isHighLighted == false {
-                sender.isHighlighted = true
-                self.isHighLighted = true
-            } else {
-                sender.isHighlighted = false
-                self.isHighLighted = false
-            }
         }
     }
 

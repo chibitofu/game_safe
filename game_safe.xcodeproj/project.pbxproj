@@ -11,7 +11,7 @@
 		608B0131FEC5D47FA99B4450 /* Pods_game_safeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E687DC95FB17BE417CCAB9 /* Pods_game_safeUITests.framework */; };
 		7307FD4F1FB883E4006E9313 /* TokenDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */; };
 		731642001FBB288A00C0C687 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731641FF1FBB288A00C0C687 /* Assets.xcassets */; };
-		731642031FBB45E000C0C687 /* UIColor+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731642021FBB45E000C0C687 /* UIColor+Tint.swift */; };
+		731642031FBB45E000C0C687 /* UIColor+Tint+Complementary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */; };
 		736637F11FB847DC008B295E /* Token+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736637EF1FB847DC008B295E /* Token+CoreDataClass.swift */; };
 		736637F21FB847DC008B295E /* Token+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736637F01FB847DC008B295E /* Token+CoreDataProperties.swift */; };
 		73A930381FB6E7AC00FE569F /* TokenCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A930371FB6E7AC00FE569F /* TokenCreationViewController.swift */; };
@@ -52,7 +52,7 @@
 		4D1218F38D296F48DBC94800 /* Pods-game_safe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safe.release.xcconfig"; path = "Pods/Target Support Files/Pods-game_safe/Pods-game_safe.release.xcconfig"; sourceTree = "<group>"; };
 		7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailItem.swift; sourceTree = "<group>"; };
 		731641FF1FBB288A00C0C687 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		731642021FBB45E000C0C687 /* UIColor+Tint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tint.swift"; sourceTree = "<group>"; };
+		731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tint+Complementary.swift"; sourceTree = "<group>"; };
 		736637EF1FB847DC008B295E /* Token+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token+CoreDataClass.swift"; sourceTree = "<group>"; };
 		736637F01FB847DC008B295E /* Token+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		73A930371FB6E7AC00FE569F /* TokenCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenCreationViewController.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 		731642011FBB459400C0C687 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				731642021FBB45E000C0C687 /* UIColor+Tint.swift */,
+				731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -502,7 +502,7 @@
 				7307FD4F1FB883E4006E9313 /* TokenDetailItem.swift in Sources */,
 				73E51B6A1FB3B6790015EF27 /* Game+CoreDataProperties.swift in Sources */,
 				736637F21FB847DC008B295E /* Token+CoreDataProperties.swift in Sources */,
-				731642031FBB45E000C0C687 /* UIColor+Tint.swift in Sources */,
+				731642031FBB45E000C0C687 /* UIColor+Tint+Complementary.swift in Sources */,
 				73A930381FB6E7AC00FE569F /* TokenCreationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
