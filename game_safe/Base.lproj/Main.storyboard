@@ -183,7 +183,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-LX-Jcx">
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-LX-Jcx">
                                 <rect key="frame" x="20" y="142" width="50" height="25"/>
                                 <color key="backgroundColor" red="1" green="0.77843639057612035" blue="0.40070694803408202" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
