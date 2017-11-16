@@ -28,19 +28,20 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         color = button.title(for: .normal)!
         
         updatedName = "\(updatedName)\(color)"
+        tokenDefault.itemName = updatedName
         
         for views in self.view.subviews as [UIView] {
-            if let buttonTag = views as? UIButton {
-                if (buttonTag.viewWithTag(2) != nil) {
-                    buttonTag.backgroundColor = buttonTag.backgroundColor?.lighter(by: 30)
-                    buttonTag.tag = 1
+            if let button = views as? UIButton {
+                if button.tag == 2 {
+                    button.tag = 1
+                    resetColorButtonStyle(button: button)
                 }
             }
         }
         
         button.tag = 2
-        button.backgroundColor = button.backgroundColor?.darker(by: 30)
-        
+        isTappedButtonColorStyle(button: button)
+
         tokenCollectionView.reloadData()
     }
 
@@ -110,11 +111,15 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         }
         
         for view in self.view.subviews as [UIView] {
-            if let buttonView = view as? UIButton {
-                if buttonView.tag == 5 {
-                    buttonView.backgroundColor = buttonView.backgroundColor?.darker(by: 30)
-                    buttonView.tag = 2
+            if let button = view as? UIButton {
+                if button.tag == 5 {
+                    isTappedButtonColorStyle(button: button)
+                    button.tag = 2
                 }
+            }
+            
+            if let buttonRadius = view as? UIButton {
+                buttonRadius.layer.cornerRadius = 5
             }
         }
         
@@ -157,6 +162,25 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             token.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
             token.tag = 4
         }
+    }
+    
+    func isTappedButtonColorStyle(button: UIButton) {
+        button.backgroundColor = button.backgroundColor?.darker(by: 20)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 2
+        button.layer.shadowColor = button.backgroundColor?.cgColor
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 6
+        button.layer.shadowOffset = CGSize(width: -1, height: -1)
+    }
+    
+    func resetColorButtonStyle(button: UIButton) {
+        button.backgroundColor = button.backgroundColor?.lighter(by: 20)
+        button.layer.borderColor = .none
+        button.layer.borderWidth = 0
+        button.layer.shadowColor = .none
+        button.layer.shadowOpacity = 0
+        button.layer.shadowRadius = 0
     }
 
     @objc func saveToken() {
