@@ -83,10 +83,20 @@ class GameDetailController: UITableViewController {
         
         let currentToken = tokens[indexPath.row]
         
-        cell.tokenImage?.image = UIImage(named: currentToken.itemName)
+        let image2 = UIImage(named: currentToken.itemName)
+        var cellImage = cell.tokenImage
+        
+//        cellImage = UIImageView(image: image2?.addImagePadding(x: 10, y: 10))
+        
+        cellImage = UIImageView(image: image2?.addImagePadding(x: 10, y: 10))
         cell.tokenNameLabel?.text = currentToken.name
         cell.tokenCountLabel?.text = String(currentToken.tokenCount)
         
+        cellImage?.layer.cornerRadius = 10
+        cellImage?.backgroundColor = UIColor.white
+        cellImage?.setX(x: 10)
+        cellImage?.setY(y: 10)
+        cell.addSubview(cellImage!)
         return cell
     }
     

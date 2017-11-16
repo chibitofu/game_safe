@@ -165,17 +165,17 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func isTappedButtonColorStyle(button: UIButton) {
-        button.backgroundColor = button.backgroundColor?.darker(by: 20)
+        button.layer.shadowColor = button.backgroundColor?.cgColor
+        button.backgroundColor = button.backgroundColor?.darker(by: 10)
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 2
-        button.layer.shadowColor = button.backgroundColor?.cgColor
         button.layer.shadowOpacity = 1
         button.layer.shadowRadius = 6
         button.layer.shadowOffset = CGSize(width: -1, height: -1)
     }
     
     func resetColorButtonStyle(button: UIButton) {
-        button.backgroundColor = button.backgroundColor?.lighter(by: 20)
+        button.backgroundColor = button.backgroundColor?.lighter(by: 10)
         button.layer.borderColor = .none
         button.layer.borderWidth = 0
         button.layer.shadowColor = .none
