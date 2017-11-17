@@ -14,8 +14,8 @@ class TokenCellController: UICollectionViewCell {
     @IBOutlet weak var tokenNameLabel: UILabel!
 }
 
-class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+
     @IBOutlet weak var tokenCollectionView: UICollectionView!
     @IBOutlet weak var tokenName: UITextField!
     @IBAction func changeTokenColor(sender: AnyObject) {
@@ -83,11 +83,17 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         //Connect collection view to controller
         tokenCollectionView.dataSource = self
         tokenCollectionView.delegate = self
+        self.tokenName.delegate = self
         
         self.view.addSubview(tokenCollectionView)
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         loadSavedData()
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -144,6 +150,27 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             currentlySelectedToken = selectedCell
             currentlySelectedTokenIndex = indexPath
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc func keyboardWillShow(notification:NSNotification){
+        //give room at the bottom of the scroll view, so it doesn't cover up anything the user needs to tap
+        var userInfo = notification.userInfo!
+        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+        
+        var contentInset:UIEdgeInsets = self.tokenCollectionView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        tokenCollectionView.contentInset = contentInset
+    }
+    
+    @objc func keyboardWillHide(notification:NSNotification){
+        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
+        tokenCollectionView.contentInset = contentInset
     }
     
     func resetHighlightTokenCell(tokenCollection: [UICollectionViewCell]) {
