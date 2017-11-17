@@ -110,6 +110,15 @@ class GameDetailController: UITableViewController {
             vc.gameName = gameDetail.name
         }
     }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            
+            self.tokens.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
 
     func changeCounter(increaseCounter: Bool, cell: GameDetailCell, index: Int, sender: Any) {
         let request = Token.createFetchRequest()
@@ -137,6 +146,10 @@ class GameDetailController: UITableViewController {
                 print("An error occurred while saving: \(error)")
             }
         }
+    }
+    
+    func deleteData() {
+        
     }
     
     func loadSavedData() {
