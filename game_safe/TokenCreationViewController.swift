@@ -41,8 +41,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         
         button.tag = 2
         isTappedButtonColorStyle(button: button)
-
-        tokenCollectionView.reloadData()
+        self.tokenCollectionView.reloadData()
     }
 
     var gameName = String()
@@ -53,10 +52,10 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var tokenEntity = Token()
     let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
     var currentlySelectedToken =  UICollectionViewCell()
+    var currentlySelectedTokenIndex = IndexPath(row: 0, section: 0)
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
         highlightTokenCell(token: currentlySelectedToken)
     }
     
@@ -88,6 +87,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         self.view.addSubview(tokenCollectionView)
         
         loadSavedData()
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -97,17 +97,6 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TokenViewCell", for: indexPath) as? TokenCellController else {
             fatalError("The dequeued cell is not an instance of GameDetailCell.")
-        }
- 
-        cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
-        cell.tokenNameLabel?.text = tokens[indexPath.row]
-        
-        resetHighlightTokenCell(tokenCollection: tokenCollectionView.visibleCells)
-        
-        highlightTokenCell(token: currentlySelectedToken)
-        
-        if indexPath.row == 0 {
-            highlightTokenCell(token: cell)
         }
         
         for view in self.view.subviews as [UIView] {
@@ -124,9 +113,24 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         }
         
         if indexPath.row == 0 && indexPath.section == 0 {
-            currentlySelectedToken = cell
+            if type(of: currentlySelectedToken) == type(of: UICollectionViewCell()) {
+                currentlySelectedToken = cell
+            }
+            
+            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+            cell.tokenNameLabel?.text = tokens[indexPath.row]
+        } else {
+            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+            cell.tokenNameLabel?.text = tokens[indexPath.row]
         }
         
+        if indexPath.row == 9 && indexPath.section == 0 {
+            if type(of: currentlySelectedToken) != type(of: UICollectionViewCell()) {
+                resetHighlightTokenCell(tokenCollection: tokenCollectionView.visibleCells)
+                highlightTokenCell(token: collectionView.cellForItem(at: currentlySelectedTokenIndex)!)
+            }
+        }
+
         return cell
     }
     
@@ -138,8 +142,8 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         if let selectedCell = tokenCollectionView.cellForItem(at: indexPath) {
             highlightTokenCell(token: selectedCell)
             currentlySelectedToken = selectedCell
+            currentlySelectedTokenIndex = indexPath
         }
-        print(indexPath)
     }
     
     func resetHighlightTokenCell(tokenCollection: [UICollectionViewCell]) {

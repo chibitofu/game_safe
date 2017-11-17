@@ -88,7 +88,7 @@ class GameDetailController: UITableViewController {
         
 //        cellImage = UIImageView(image: image2?.addImagePadding(x: 10, y: 10))
         
-        cellImage = UIImageView(image: image2?.addImagePadding(x: 10, y: 10))
+        cellImage = UIImageView(image: image2?.addImagePadding(x: 5, y: 5))
         cell.tokenNameLabel?.text = currentToken.name
         cell.tokenCountLabel?.text = String(currentToken.tokenCount)
         
