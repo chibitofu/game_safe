@@ -55,7 +55,6 @@ class GameDetailController: UITableViewController {
         container = NSPersistentContainer(name: "game_safe")
         
         container.loadPersistentStores() { (description, error) in
-            
             if let error = error {
                 print("unresolved error \(error)")
             }
@@ -86,8 +85,6 @@ class GameDetailController: UITableViewController {
         let image2 = UIImage(named: currentToken.itemName)
         var cellImage = cell.tokenImage
         
-//        cellImage = UIImageView(image: image2?.addImagePadding(x: 10, y: 10))
-        
         cellImage = UIImageView(image: image2?.addImagePadding(x: 5, y: 5))
         cell.tokenNameLabel?.text = currentToken.name
         cell.tokenCountLabel?.text = String(currentToken.tokenCount)
@@ -113,10 +110,12 @@ class GameDetailController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            print("Deleted")
+            let token = tokens[indexPath.row].name
             
             self.tokens.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            deleteData(deleteToken: token)
         }
     }
 
@@ -148,8 +147,30 @@ class GameDetailController: UITableViewController {
         }
     }
     
-    func deleteData() {
+    func deleteData(deleteToken: String) {
+        let request = Token.createFetchRequest()
+        let filter = NSPredicate(format: "name = %@", "\(deleteToken)")
         
+        request.predicate = filter
+
+        do {
+            let fetchData = try container.viewContext.fetch(request)
+
+            for object in fetchData {
+                print(object.name)
+                container.viewContext.delete(object)
+            }
+        } catch {
+            print("Fetch failed")
+        }
+        
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
+        }
     }
     
     func loadSavedData() {
@@ -159,7 +180,6 @@ class GameDetailController: UITableViewController {
         request.predicate = filter
 
         do {
-            
             let fetchData = try container.viewContext.fetch(request)
             let tokenData = fetchData[0].tokens
             

@@ -96,9 +96,12 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
+            let gameName = gameCollection[indexPath.row].name
             
             self.gameCollection.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            deleteData(deleteGame: gameName)
         }
     }
     
@@ -130,6 +133,32 @@ class ViewController: UITableViewController {
             tableView.reloadData()
         } catch {
             print("Fetch failed")
+        }
+    }
+    
+    func deleteData(deleteGame: String) {
+        let request = Game.createFetchRequest()
+        let filter = NSPredicate(format: "name = %@", "\(deleteGame)")
+        
+        request.predicate = filter
+        
+        do {
+            let fetchData = try container.viewContext.fetch(request)
+            
+            for object in fetchData {
+                print(object.name)
+                container.viewContext.delete(object)
+            }
+        } catch {
+            print("Fetch failed")
+        }
+        
+        if container.viewContext.hasChanges {
+            do {
+                try container.viewContext.save()
+            } catch {
+                print("An error occurred while saving: \(error)")
+            }
         }
     }
 }
