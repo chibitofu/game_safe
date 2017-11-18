@@ -62,6 +62,13 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "paperBG")?.draw(in: self.view.bounds)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        self.view.backgroundColor = UIColor(patternImage: image)
+        tokenCollectionView.backgroundColor = UIColor(patternImage: image)
+        
         //Connect to Core Data Enitity
         container = NSPersistentContainer(name: "game_safe")
         container.loadPersistentStores { storeDescription, error in
@@ -190,19 +197,19 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
             token.layer.cornerRadius = 10
             token.layer.borderWidth = 2
             token.layer.borderColor = UIColor.lightGray.cgColor
-            token.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+            token.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
             token.tag = 4
         }
     }
     
     func isTappedButtonColorStyle(button: UIButton) {
-        button.layer.shadowColor = button.backgroundColor?.cgColor
+        button.layer.shadowColor = UIColor.darkGray.cgColor
         button.backgroundColor = button.backgroundColor?.darker(by: 10)
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 2
         button.layer.shadowOpacity = 1
-        button.layer.shadowRadius = 6
-        button.layer.shadowOffset = CGSize(width: -1, height: -1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
     
     func resetColorButtonStyle(button: UIButton) {
@@ -257,10 +264,8 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
 
         do {
             currentGame = (try container.viewContext.fetch(request))[0]
-            print("Got \(currentGame.name.description)")
         } catch {
             print("Fetch failed")
         }
     }
-
 }

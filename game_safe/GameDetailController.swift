@@ -23,7 +23,6 @@ class GameDetailCell: UITableViewCell {
     @IBAction func countDecrease(_ sender: Any) {
         tapped?(self, false)
     }
-
 }
 
 class GameDetailController: UITableViewController {
@@ -42,6 +41,12 @@ class GameDetailController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "paperBG")?.draw(in: self.view.bounds)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        self.view.backgroundColor = UIColor(patternImage: image)
         
         tokens.removeAll(keepingCapacity: true)
         
@@ -128,7 +133,6 @@ class GameDetailController: UITableViewController {
             let currentToken = try container.viewContext.fetch(request)
             if increaseCounter {
                 currentToken[0].tokenCount += 1
-                
             } else {
                 currentToken[0].tokenCount -= 1
             }
@@ -157,7 +161,6 @@ class GameDetailController: UITableViewController {
             let fetchData = try container.viewContext.fetch(request)
 
             for object in fetchData {
-                print(object.name)
                 container.viewContext.delete(object)
             }
         } catch {
@@ -185,7 +188,7 @@ class GameDetailController: UITableViewController {
             
             if !(tokenData != nil) {
                 return
-            } else  {
+            } else {
                 for token in tokenData! {
                     let name = token.name
                     let itemName = token.itemName
@@ -200,5 +203,4 @@ class GameDetailController: UITableViewController {
             print("Fetch failed")
         }
     }
-    
 }
