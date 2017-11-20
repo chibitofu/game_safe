@@ -12,10 +12,31 @@ import CoreData
 class TokenCellController: UICollectionViewCell {
     @IBOutlet weak var tokenImage: UIImageView!
     @IBOutlet weak var tokenNameLabel: UILabel!
+    
+    func resetHighlightTokenCell() {
+        self.layer.cornerRadius = 0
+        self.layer.borderWidth = 0
+        self.layer.borderColor = .none
+        self.backgroundColor = .none
+        self.tag = 3
+    }
+    
+    func highlightTokenCell() {
+        self.layer.cornerRadius = 10
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
+        self.tag = 4
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.resetHighlightTokenCell()
+    }
 }
 
 class TokenCreationViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
-
+    
     @IBOutlet weak var tokenCollectionView: UICollectionView!
     @IBOutlet weak var tokenName: UITextField!
     @IBAction func changeTokenColor(sender: AnyObject) {
@@ -56,7 +77,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        highlightTokenCell(token: currentlySelectedToken)
+        print("Did Appear")
     }
     
     override func viewDidLoad() {
@@ -118,45 +139,31 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
                     isTappedButtonColorStyle(button: button)
                     button.tag = 2
                 }
+                button.layer.cornerRadius = 5
             }
-            
-            if let buttonRadius = view as? UIButton {
-                buttonRadius.layer.cornerRadius = 5
-            }
+        }
+        cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+        cell.tokenNameLabel?.text = tokens[indexPath.row]
+        
+        if currentlySelectedTokenIndex == indexPath {
+            cell.highlightTokenCell()
         }
         
-        if indexPath.row == 0 && indexPath.section == 0 {
-            if type(of: currentlySelectedToken) == type(of: UICollectionViewCell()) {
-                currentlySelectedToken = cell
-            }
-            
-            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
-            cell.tokenNameLabel?.text = tokens[indexPath.row]
-        } else {
-            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
-            cell.tokenNameLabel?.text = tokens[indexPath.row]
-        }
-        
-        if indexPath.row == 9 && indexPath.section == 0 {
-            if type(of: currentlySelectedToken) != type(of: UICollectionViewCell()) {
-                resetHighlightTokenCell(tokenCollection: tokenCollectionView.visibleCells)
-                highlightTokenCell(token: collectionView.cellForItem(at: currentlySelectedTokenIndex)!)
-            }
-        }
-
         return cell
     }
     
-    func collectionView(_ tableView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        resetHighlightTokenCell(tokenCollection: tokenCollectionView.visibleCells)
-        
-        if let selectedCell = tokenCollectionView.cellForItem(at: indexPath) {
-            highlightTokenCell(token: selectedCell)
-            currentlySelectedToken = selectedCell
-            currentlySelectedTokenIndex = indexPath
+        if let cell = collectionView.cellForItem(at: indexPath) as? TokenCellController {
+            cell.highlightTokenCell()
+            tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
         }
+        
+        if let deselectCell = collectionView.cellForItem(at: currentlySelectedTokenIndex) as? TokenCellController {
+            deselectCell.resetHighlightTokenCell()
+        }
+
+        currentlySelectedTokenIndex = indexPath
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -180,26 +187,8 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         tokenCollectionView.contentInset = contentInset
     }
     
-    func resetHighlightTokenCell(tokenCollection: [UICollectionViewCell]) {
-        for cell in tokenCollection {
-            if cell.tag == 4 {
-                cell.layer.cornerRadius = 0
-                cell.layer.borderWidth = 0
-                cell.layer.borderColor = .none
-                cell.backgroundColor = .none
-                cell.tag = 3
-            }
-        }
-    }
-
-    func highlightTokenCell(token: UICollectionViewCell) {
-        if token.tag == 3 {
-            token.layer.cornerRadius = 10
-            token.layer.borderWidth = 2
-            token.layer.borderColor = UIColor.lightGray.cgColor
-            token.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
-            token.tag = 4
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.tokenCollectionView.reloadData()
     }
     
     func isTappedButtonColorStyle(button: UIButton) {
