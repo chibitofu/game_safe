@@ -43,7 +43,7 @@ class GameDetailCell: UITableViewCell {
         ]
         
         if let newCellColor = colorDictionary[colorFromName] {
-            return self.contentView.backgroundColor = newCellColor
+            return self.contentView.backgroundColor = newCellColor.darker(by: 10)
         }
         
         return self.contentView.backgroundColor = UIColor(red: 188, green: 190, blue: 192, alpha: 1)
@@ -114,22 +114,30 @@ class GameDetailController: UITableViewController {
         let image2 = UIImage(named: currentToken.itemName)
         var cellImage = cell.tokenImage
         let cellLabel = cell.tokenNameLabel
+        let cellCount = cell.tokenCountLabel
+        let tapCounter = UILongPressGestureRecognizer(target: self, action: #selector(editCounter(sender: )))
         
         cell.cellBackgroundColor(from: currentToken.itemName)
+        
+        cellCount?.isUserInteractionEnabled = true
+        cellCount?.addGestureRecognizer(tapCounter)
+        cellCount?.text = String(currentToken.tokenCount)
+
         cellLabel?.text = currentToken.name
         cellLabel?.textColor = UIColor.white
         cellLabel?.layer.shadowColor = UIColor(red: 65/255, green: 64/255, blue: 66/255, alpha: 1.0).cgColor
         cellLabel?.layer.shadowOffset = CGSize(width: 0, height: 0)
         cellLabel?.layer.shadowRadius = 3
         cellLabel?.layer.shadowOpacity = 0.5
-        cell.tokenCountLabel?.text = String(currentToken.tokenCount)
         
         cellImage = UIImageView(image: image2?.addImagePadding(x: 5, y: 5))
         cellImage?.layer.cornerRadius = 10
         cellImage?.backgroundColor = UIColor.white
         cellImage?.setX(x: 10)
         cellImage?.setY(y: 10)
+        
         cell.addSubview(cellImage!)
+        
         return cell
     }
     
@@ -180,6 +188,55 @@ class GameDetailController: UITableViewController {
                 print("An error occurred while saving: \(error)")
             }
         }
+    }
+    
+    @objc func editCounter(sender: UIGestureRecognizer) {
+        let point = sender.view
+        let mainCell = point?.superview
+        let main = mainCell?.superview
+        let cell = main as? GameDetailCell
+        let indexPath = tableView.indexPath(for: cell!)
+        
+        let ac = UIAlertController(title: "Edit Amount", message: "Enter number of tokens.", preferredStyle: .alert)
+        
+        let save = UIAlertAction(title: "Save", style: .default) {
+            [unowned self] action in
+            
+            guard let textField = ac.textFields?.first,
+                let newCount = textField.text else { return }
+            let request = Token.createFetchRequest()
+            let filter = NSPredicate(format: "name = %@", "\(self.tokens[(indexPath?.row)!].name)")
+            request.predicate = filter
+
+            do {
+                let currentToken = try self.container.viewContext.fetch(request)
+                
+                if let newCountInt = Int(newCount) {
+                    currentToken[0].tokenCount = newCountInt
+                    cell?.tokenCountLabel?.text = String(currentToken[0].tokenCount)
+                }
+                
+            } catch {
+                print("Fetch failed")
+            }
+
+            if self.container.viewContext.hasChanges {
+                do {
+                    try self.container.viewContext.save()
+                } catch {
+                    print("An error occurred while saving: \(error)")
+                }
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .default)
+        
+        ac.addTextField(configurationHandler: { textField in
+            textField.keyboardType = .numberPad
+        })
+        ac.addAction(save)
+        ac.addAction(cancel)
+        present(ac, animated: true)
     }
     
     func deleteData(deleteToken: String) {
