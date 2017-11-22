@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D671E0B30140F26D8F04F9E /* Pods_game_safe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D1F87643927248426D3128 /* Pods_game_safe.framework */; };
 		608B0131FEC5D47FA99B4450 /* Pods_game_safeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E687DC95FB17BE417CCAB9 /* Pods_game_safeUITests.framework */; };
+		730233871FC5C17900CBC47B /* UIColor+ColorDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730233861FC5C17800CBC47B /* UIColor+ColorDictionary.swift */; };
 		7307FD4F1FB883E4006E9313 /* TokenDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */; };
 		731642001FBB288A00C0C687 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731641FF1FBB288A00C0C687 /* Assets.xcassets */; };
 		731642031FBB45E000C0C687 /* UIColor+Tint+Complementary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */; };
@@ -52,6 +53,7 @@
 		2874544DA66701616B0B2C8E /* Pods-game_safeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-game_safeUITests/Pods-game_safeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2C1A0AB7DC1983E5230D7E98 /* Pods-game_safe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-game_safe/Pods-game_safe.debug.xcconfig"; sourceTree = "<group>"; };
 		4D1218F38D296F48DBC94800 /* Pods-game_safe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-game_safe.release.xcconfig"; path = "Pods/Target Support Files/Pods-game_safe/Pods-game_safe.release.xcconfig"; sourceTree = "<group>"; };
+		730233861FC5C17800CBC47B /* UIColor+ColorDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ColorDictionary.swift"; sourceTree = "<group>"; };
 		7307FD4E1FB883E4006E9313 /* TokenDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailItem.swift; sourceTree = "<group>"; };
 		731641FF1FBB288A00C0C687 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Tint+Complementary.swift"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		731642011FBB459400C0C687 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				730233861FC5C17800CBC47B /* UIColor+ColorDictionary.swift */,
 				731642021FBB45E000C0C687 /* UIColor+Tint+Complementary.swift */,
 				73EE833D1FBDDC1A00E2F08D /* UIImage+AddPadding.swift */,
 				73EE833F1FBDE2AE00E2F08D /* UIView+XYPosition.swift */,
@@ -511,6 +514,7 @@
 				736637F21FB847DC008B295E /* Token+CoreDataProperties.swift in Sources */,
 				731642031FBB45E000C0C687 /* UIColor+Tint+Complementary.swift in Sources */,
 				73EE83401FBDE2AE00E2F08D /* UIView+XYPosition.swift in Sources */,
+				730233871FC5C17900CBC47B /* UIColor+ColorDictionary.swift in Sources */,
 				73A930381FB6E7AC00FE569F /* TokenCreationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

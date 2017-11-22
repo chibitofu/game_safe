@@ -23,6 +23,31 @@ class GameDetailCell: UITableViewCell {
     @IBAction func countDecrease(_ sender: Any) {
         tapped?(self, false)
     }
+    
+    func cellBackgroundColor(from itemName: String) {
+        guard let colorFromName = itemName.components(separatedBy: "_").last else {
+            return self.contentView.backgroundColor = UIColor(red: 188, green: 190, blue: 192, alpha: 1)
+        }
+        
+        let colorDictionary = [
+            "gold"      : UIColor(red: 255/255, green: 197/255, blue: 25/255, alpha: 1.0),
+            "silver"    : UIColor(red: 167/255, green: 169/255, blue: 172/255, alpha: 1.0),
+            "bronze"    : UIColor(red: 132/255, green: 73/255, blue: 36/255, alpha: 1.0),
+            "red"       : UIColor(red: 206/255, green: 26/255, blue: 43/255, alpha: 1.0),
+            "green"     : UIColor(red: 0/255, green: 148/255, blue: 68/255, alpha: 1.0),
+            "blue"      : UIColor(red: 28/255, green: 117/255, blue: 188/255, alpha: 1.0),
+            "purple"    : UIColor(red: 102/255, green: 45/255, blue: 145/255, alpha: 1.0),
+            "pink"      : UIColor(red: 242/255, green: 135/255, blue: 183/255, alpha: 1.0),
+            "white"     : UIColor(red: 188/255, green: 190/255, blue: 192/255, alpha: 1.0),
+            "black"     : UIColor(red: 65/255, green: 64/255, blue: 66/255, alpha: 1.0)
+        ]
+        
+        if let newCellColor = colorDictionary[colorFromName] {
+            return self.contentView.backgroundColor = newCellColor
+        }
+        
+        return self.contentView.backgroundColor = UIColor(red: 188, green: 190, blue: 192, alpha: 1)
+    }
 }
 
 class GameDetailController: UITableViewController {
@@ -86,14 +111,20 @@ class GameDetailController: UITableViewController {
         }
         
         let currentToken = tokens[indexPath.row]
-        
         let image2 = UIImage(named: currentToken.itemName)
         var cellImage = cell.tokenImage
+        let cellLabel = cell.tokenNameLabel
         
-        cellImage = UIImageView(image: image2?.addImagePadding(x: 5, y: 5))
-        cell.tokenNameLabel?.text = currentToken.name
+        cell.cellBackgroundColor(from: currentToken.itemName)
+        cellLabel?.text = currentToken.name
+        cellLabel?.textColor = UIColor.white
+        cellLabel?.layer.shadowColor = UIColor(red: 65/255, green: 64/255, blue: 66/255, alpha: 1.0).cgColor
+        cellLabel?.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cellLabel?.layer.shadowRadius = 3
+        cellLabel?.layer.shadowOpacity = 0.5
         cell.tokenCountLabel?.text = String(currentToken.tokenCount)
         
+        cellImage = UIImageView(image: image2?.addImagePadding(x: 5, y: 5))
         cellImage?.layer.cornerRadius = 10
         cellImage?.backgroundColor = UIColor.white
         cellImage?.setX(x: 10)
