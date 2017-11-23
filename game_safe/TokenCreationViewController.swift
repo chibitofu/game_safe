@@ -71,7 +71,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var container: NSPersistentContainer!
     var currentGame = Game()
     var tokenEntity = Token()
-    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
+    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box", "custom token"]
     var currentlySelectedTokenIndex = IndexPath(row: 0, section: 0)
     
     override func viewDidAppear(_ animated: Bool) {
@@ -141,8 +141,15 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
                 button.layer.cornerRadius = 5
             }
         }
-        cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+        
         cell.tokenNameLabel?.text = tokens[indexPath.row]
+        
+        if (tokens.count - 1) == indexPath.row {
+            let testString = "Hello World"
+            cell.tokenImage?.image = testString.emojiToImage()
+        } else {
+            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+        }
         
         if currentlySelectedTokenIndex == indexPath {
             cell.highlightTokenCell()
@@ -153,16 +160,18 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let cell = collectionView.cellForItem(at: indexPath) as? TokenCellController {
-            cell.highlightTokenCell()
-            tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+        if indexPath != currentlySelectedTokenIndex {
+            if let cell = collectionView.cellForItem(at: indexPath) as? TokenCellController {
+                cell.highlightTokenCell()
+                tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+            }
+            
+            if let deselectCell = collectionView.cellForItem(at: currentlySelectedTokenIndex) as? TokenCellController {
+                deselectCell.resetHighlightTokenCell()
+            }
+            
+            currentlySelectedTokenIndex = indexPath
         }
-        
-        if let deselectCell = collectionView.cellForItem(at: currentlySelectedTokenIndex) as? TokenCellController {
-            deselectCell.resetHighlightTokenCell()
-        }
-
-        currentlySelectedTokenIndex = indexPath
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
