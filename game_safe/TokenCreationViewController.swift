@@ -71,7 +71,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var container: NSPersistentContainer!
     var currentGame = Game()
     var tokenEntity = Token()
-    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box", "custom token"]
+    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
     var currentlySelectedTokenIndex = IndexPath(row: 0, section: 0)
     
     override func viewDidAppear(_ animated: Bool) {
