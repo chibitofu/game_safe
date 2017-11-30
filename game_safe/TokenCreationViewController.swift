@@ -71,7 +71,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
     var container: NSPersistentContainer!
     var currentGame = Game()
     var tokenEntity = Token()
-    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box"]
+    let tokens = ["coin", "moneybag", "bill", "diamond", "heart", "star", "pawn", "pyramid", "ball", "box", "peg", "sword", "shield", "tree", "d8", "d10", "d12", "d20"]
     var currentlySelectedTokenIndex = IndexPath(row: 0, section: 0)
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,12 +144,14 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         
         cell.tokenNameLabel?.text = tokens[indexPath.row]
         
-        if (tokens.count - 1) == indexPath.row {
-            let testString = "Hello World"
-            cell.tokenImage?.image = testString.emojiToImage()
-        } else {
-            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
-        }
+//        if (tokens.count - 1) == indexPath.row {
+//            let testString = "Hello World"
+//            cell.tokenImage?.image = testString.emojiToImage()
+//        } else {
+//            cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])_\(color)")
+//        }
+        
+        cell.tokenImage?.image = UIImage(named: "\(tokens[indexPath.row])-\(color)")
         
         if currentlySelectedTokenIndex == indexPath {
             cell.highlightTokenCell()
@@ -163,7 +165,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
         if indexPath != currentlySelectedTokenIndex {
             if let cell = collectionView.cellForItem(at: indexPath) as? TokenCellController {
                 cell.highlightTokenCell()
-                tokenDefault.itemName = "\(tokens[indexPath.row])_\(color)"
+                tokenDefault.itemName = "\(tokens[indexPath.row])-\(color)"
             }
             
             if let deselectCell = collectionView.cellForItem(at: currentlySelectedTokenIndex) as? TokenCellController {
