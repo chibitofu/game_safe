@@ -25,7 +25,7 @@ class GameDetailCell: UITableViewCell {
     }
     
     func cellBackgroundColor(from itemName: String) {
-        guard let colorFromName = itemName.components(separatedBy: "_").last else {
+        guard let colorFromName = itemName.components(separatedBy: "-").last else {
             return self.contentView.backgroundColor = UIColor(red: 188, green: 190, blue: 192, alpha: 1)
         }
         
