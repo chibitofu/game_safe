@@ -23,15 +23,14 @@ class ViewController: UITableViewController {
         UIGraphicsEndImageContext()
         self.view.backgroundColor = UIColor(patternImage: image)
         
-        title = "Game Safe"
+        title = "Token Tote"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCollection))
         
         container = NSPersistentContainer(name: "game_safe")
         
         container.loadPersistentStores { storeDescription, error in
-            self.container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-            
+            self.container.viewContext.mergePolicy = NSErrorMergePolicy
             if let error = error {
                 print("unresolved error \(error)")
             }
@@ -61,13 +60,28 @@ class ViewController: UITableViewController {
         self.performSegue(withIdentifier: "GameDetailViewSegue", sender: self)
     }
     
+    weak var actionToEnable : UIAlertAction?
+    
     @objc func addCollection() {
-        let ac = UIAlertController(title: "Create new safe", message: "Enter name of the safe", preferredStyle: .alert)
+        let ac = UIAlertController(title: "Create a new tote", message: "Enter tote name here", preferredStyle: .alert)
+        ac.addTextField(configurationHandler: {(textField: UITextField) in
+            textField.placeholder = "New Tote"
+            textField.addTarget(self, action: #selector(self.textChanged(_:)), for: .editingChanged)
+        })
+        
         let save = UIAlertAction(title: "Save", style: .default) {
             [unowned self] action in
             
             guard let textField = ac.textFields?.first,
                 let nameToSave = textField.text else { return }
+//            var nameToSave = "New Game"
+            
+//            if let textField = ac.textFields?.first {
+//                if textField.text != "" {
+//                    nameToSave = textField.text!
+//                }
+//            }
+//
             let currentGame = Game(context: self.container.viewContext)
             
             self.save(addGame: currentGame, gameName: nameToSave)
@@ -78,12 +92,19 @@ class ViewController: UITableViewController {
         
         let cancel = UIAlertAction(title: "Cancel", style: .default)
         
-        ac.addTextField()
+//        ac.addTextField()
         ac.addAction(save)
         ac.addAction(cancel)
         ac.textFields?.first?.autocapitalizationType = .sentences
         
+        self.actionToEnable = save
+        save.isEnabled = false
+        
         present(ac, animated: true)
+    }
+    
+    @objc func textChanged(_ sender:UITextField) {
+        self.actionToEnable?.isEnabled  = (sender.text != "")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -117,13 +138,17 @@ class ViewController: UITableViewController {
         game.name = gameName
         game.createdAt = date
         
-        gameCollection.insert(game, at: 0)
-        
         if container.viewContext.hasChanges {
             do {
                 try container.viewContext.save()
+                gameCollection.insert(game, at: 0)
             } catch {
-                print("An error occurred while saving: \(error)")
+                let ac = UIAlertController(title: "\(game.name) already exists", message: "Please enter in a new tote name", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .default)
+                
+                ac.addAction(ok)
+                
+                present(ac, animated: true)
             }
         }
     }

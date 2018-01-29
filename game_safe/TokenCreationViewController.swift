@@ -67,7 +67,7 @@ class TokenCreationViewController: UIViewController, UICollectionViewDelegate, U
 
     var gameName = String()
     var color = "gold"
-    var tokenDefault = TokenDetailItem(name: "New Token", itemName: "coin_gold", tokenCount: 1, tokenCreatedAt: Date())
+    var tokenDefault = TokenDetailItem(name: "New Token", itemName: "coin-gold", tokenCount: 1, tokenCreatedAt: Date())
     var container: NSPersistentContainer!
     var currentGame = Game()
     var tokenEntity = Token()
