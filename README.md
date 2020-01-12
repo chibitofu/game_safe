@@ -24,3 +24,5 @@ Native iOS app that allows users to store, name and manage various tokens and cu
  - Adaptable design able to be used on multiple devices.
 
 ![iPad screenshot](https://i.imgur.com/okVMKXfl.png)
+
+** Not currently on app store due to lapsed developers account.*
