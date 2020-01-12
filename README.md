@@ -11,7 +11,7 @@ Native iOS app that allows users to store, name and manage various tokens and cu
  - Native iOS app.
  - Create new games or use/edit previous games.
 
-![Game management screen](https://i.imgur.com/1KIInAnl.png)
+![Game management screen](https://i.imgur.com/rg4D8rxl.png)
 
  - Add new tokens to track or delete unused one.
 
