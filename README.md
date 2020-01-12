@@ -8,7 +8,7 @@ Native iOS app that allows users to store, name and manage various tokens and cu
 **Features**
  - Uses Core Data to store information securely and locally. 
  - 18 unique tokens to choose from each with 10 color options.
- - Native iOS app.
+ - Written in Swift.
  - Create new games or use/edit previous games.
 
 ![Game management screen](https://i.imgur.com/rg4D8rxl.png)
